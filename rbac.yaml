@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: chaos-app-account
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: chaos-app-role
+  namespace: default
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: chaos-app-rolebinding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: chaos-app-account
+  namespace: default
+roleRef:
+  kind: Role
+  name: chaos-app-role
+  apiGroup: rbac.authorization.k8s.io
