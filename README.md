@@ -176,6 +176,42 @@ kubectl apply -f service.yaml
 kubectl apply -f rbac.yaml
 kubectl apply -f prometheus-alerts.yaml
 
+---
+
+## 🔐 Recent Enhancements
+
+### 🛡️ Network Policies
+We implemented Kubernetes Network Policies to control and restrict communication between pods. This improves security by allowing only required traffic within the cluster.
+
+---
+
+### 📊 Monitoring (Prometheus + Grafana)
+- Prometheus is used to collect system metrics  
+- Grafana is used to visualize real-time data  
+- Dashboards include CPU, memory, and pod monitoring  
+
+---
+
+### 🧪 Testing Strategy
+- Functional Testing → `/health` endpoint  
+- Failure Testing → `/crash` endpoint  
+- Recovery Testing → Kubernetes auto-healing  
+
+---
+
+### 🔄 Self-Healing Demonstration
+The system automatically recovers from failures:
+- When `/crash` endpoint is triggered  
+- Kubernetes detects failure  
+- Pod is restarted automatically  
+
+---
+
+### 🔮 Upcoming Improvements
+- Integration of LitmusChaos for advanced chaos engineering  
+- Deployment on AWS (EKS)  
+- Improved frontend UI  
+
 ## 👨‍💻 Author
 
 ZorawarSinghKhan
