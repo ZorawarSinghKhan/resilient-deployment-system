@@ -1,218 +1,94 @@
-# 🚀 Resilient Deployment System
+# Resilient Deployment System
 
-A production-grade DevOps + Cybersecurity project demonstrating self-healing infrastructure, automated CI/CD, real-time monitoring, and security best practices.
+## Overview
 
-![GitHub Actions](https://github.com/ZorawarSinghKhan/resilient-deployment-system/actions/workflows/deploy.yml/badge.svg)
+Resilient Deployment System is a Kubernetes-based deployment validation and resilience testing platform designed to demonstrate self-healing, scalability, observability, and fault tolerance of cloud-native applications.
 
-## 📋 Table of Contents
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Quick Start](#quick-start)
-- [CI/CD Pipeline](#cicd-pipeline)
-- [Security](#security)
-- [Monitoring and Alerts](#monitoring-and-alerts)
-- [Cloud Deployment](#cloud-deployment)
+The project deploys a Flask application inside Kubernetes and uses Chaos Mesh to inject controlled failures while Prometheus and Grafana monitor system behavior in real time.
 
-## 🌟 Overview
+## Objectives
 
-This project builds a system that:
-- Detects application failures automatically
-- Restarts crashed pods without human intervention (self-healing)
-- Monitors everything in real-time with Prometheus and Grafana
-- Secures the infrastructure with RBAC and vulnerability scanning
-- Deploys automatically on every code push via GitHub Actions
+- Demonstrate Kubernetes self-healing capabilities
+- Validate application resilience under failures
+- Monitor application and infrastructure metrics
+- Test scalability and recovery mechanisms
+- Provide a platform for resilience testing of containerized applications
 
-## 🏗️ Architecture
+## Technology Stack
 
-Developer pushes code
-        ↓
-GitHub Actions CI/CD Pipeline
-        ↓
-  1. Run Tests (pytest)
-  2. Build Docker Image
-  3. Trivy Security Scan
-        ↓
-Kubernetes Cluster (Minikube / GKE-ready)
-        ↓
-  Pod 1: Flask App
-  Pod 2: Flask App  (2 replicas, auto-healing)
-        ↓
-Prometheus (Metrics) → Grafana (Dashboard + Alerts)
-
-## ✅ Features
-
-| Feature | Description |
-|---------|-------------|
-| Self-Healing | Kubernetes restarts crashed pods automatically |
-| Auto-Scaling | 2 replicas with load balancing |
-| CI/CD Pipeline | GitHub Actions runs on every git push |
-| Security Scanning | Trivy scans for HIGH/CRITICAL vulnerabilities |
-| RBAC | Role-based access control for Kubernetes |
-| Monitoring | Prometheus + Grafana real-time dashboards |
-| Alerting | Alerts for pod crashes and high memory usage |
-| GKE-Ready | Designed for Google Kubernetes Engine |
-
-## 🛠️ Tech Stack
-
-| Tool | Purpose |
-|------|---------|
-| Python Flask | Web application |
-| Docker | Containerization |
-| Kubernetes | Orchestration + Self-healing |
-| Minikube | Local Kubernetes cluster |
-| Prometheus | Metrics collection + Alerting |
-| Grafana | Visual dashboards |
-| GitHub Actions | CI/CD automation |
-| Trivy | Docker image security scanning |
-| Helm | Kubernetes package manager |
-| RBAC | Kubernetes access control |
-
-## 📁 Project Structure
-
-chaos-project/
-├── app.py                        # Flask app (/, /health, /crash)
-├── Dockerfile                    # Container definition
-├── deployment.yaml               # K8s deployment (2 replicas)
-├── service.yaml                  # K8s service (NodePort 30007)
-├── rbac.yaml                     # RBAC security config
-├── prometheus-alerts.yaml        # Alerting rules
-├── tests/
-│   └── test_app.py               # Automated tests
-└── .github/
-    └── workflows/
-        └── deploy.yml            # GitHub Actions pipeline
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Docker Desktop
+- Python (Flask)
+- Docker
+- Kubernetes
 - Minikube
-- kubectl
-- Helm
+- Chaos Mesh
+- Prometheus
+- Grafana
+- Git & GitHub
 
-### 1. Clone the repo
-git clone https://github.com/ZorawarSinghKhan/resilient-deployment-system
-cd resilient-deployment-system
+## Project Structure
 
-### 2. Start Minikube
-minikube start
+text chaos-project/ │ ├── app.py ├── Dockerfile ├── README.md │ ├── chaos/ │   ├── cpu-stress.yaml │   ├── memory-stress.yaml │   ├── network-delay.yaml │   ├── packet-loss.yaml │   └── pod-chaos.yaml │ ├── kubernetes/ │   ├── deployment.yaml │   ├── service.yaml │   ├── network-policy.yaml │   └── rbac.yaml │ ├── monitoring/ │   └── prometheus-alerts.yaml │ ├── docs/ │ └── tests/ 
 
-### 3. Deploy the app
-kubectl apply -f deployment.yaml
-kubectl apply -f service.yaml
+## Features
 
-### 4. Apply security
-kubectl apply -f rbac.yaml
+### Self-Healing
+- Automatic pod recovery
+- Application crash recovery
+- Container restart and recovery
 
-### 5. Apply Prometheus alerts
-kubectl apply -f prometheus-alerts.yaml
+### Scalability
+- Horizontal scaling using Kubernetes replicas
+- Dynamic workload distribution
 
-### 6. Install monitoring stack
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm install monitoring prometheus-community/kube-prometheus-stack -n monitoring --create-namespace
+### Monitoring
+- Prometheus metrics collection
+- Grafana dashboards
+- CPU and memory monitoring
 
-### 7. Access the app
-minikube service chaos-app-service
+### Chaos Engineering
+- Controlled fault injection using Chaos Mesh
+- Failure simulation and recovery validation
 
-### 8. Test self-healing
-curl http://localhost:30007/crash
-kubectl get pods -w
+## Testing Performed
 
-## 🤖 CI/CD Pipeline
+| Test | Status |
+|--------|---------|
+| Pod Kill Test | PASS |
+| Application Crash Test | PASS |
+| CPU Stress Test | PASS |
+| Memory Stress Test | PASS |
+| Scalability Test | PASS |
+| Network Delay Test | PASS |
+| Packet Loss Test | PASS |
+| Container Kill Test | PASS |
+| Service Failure Test | PASS |
 
-Every git push triggers GitHub Actions automatically:
+## Results
 
-✅ Checkout code
-✅ Set up Python
-✅ Install dependencies
-✅ Run pytest tests
-✅ Build Docker image
-✅ Trivy security scan
+The system successfully demonstrated Kubernetes self-healing and resilience capabilities. Multiple failure scenarios were injected and automatically recovered without manual intervention.
 
-## 🔐 Security
+The platform validated:
+- Application recovery
+- Container recovery
+- Pod recovery
+- Service restoration
+- Resource stress handling
+- Network fault tolerance
+- Scalability under increased load
 
-### Trivy Vulnerability Scanning
-- Scans Docker image on every push
-- Detects HIGH and CRITICAL vulnerabilities
-- Part of the CI/CD pipeline
+## Future Enhancements
 
-### Kubernetes RBAC
-- Custom ServiceAccount for the app
-- Read-only access (get, list, watch)
-- Principle of least privilege
+- AWS Cloud Deployment
+- Trivy Security Scanning
+- Horizontal Pod Autoscaler (HPA)
+- Alertmanager Integration
+- Automated Recovery Workflows
+- Custom Dashboard for Chaos Testing
 
-## 📊 Monitoring and Alerts
+## Author
 
-### Start Grafana
-kubectl port-forward svc/monitoring-grafana 3000:80 -n monitoring
-Open http://localhost:3000
+Ashutosh Chaudhary
 
-### Prometheus Alerts
-| Alert | Trigger | Severity |
-|-------|---------|----------|
-| PodCrashing | Pod restarts more than 3 times | Critical |
-| PodNotRunning | No pods running | Critical |
-| HighMemoryUsage | Memory more than 100MB | Warning |
+B.Tech CSE (DevOps & Cloud Computing)
 
-## ☁️ Cloud Deployment (GKE-Ready)
-
-This project is designed to run on Google Kubernetes Engine:
-
-gcloud container clusters create resilient-cluster \
-  --num-nodes=2 \
-  --machine-type=e2-medium \
-  --region=us-central1 \
-  --enable-autoscaling \
-  --min-nodes=1 \
-  --max-nodes=3
-
-gcloud container clusters get-credentials resilient-cluster --region=us-central1
-
-kubectl apply -f deployment.yaml
-kubectl apply -f service.yaml
-kubectl apply -f rbac.yaml
-kubectl apply -f prometheus-alerts.yaml
-
----
-
-## 🔐 Recent Enhancements
-
-### 🛡️ Network Policies
-We implemented Kubernetes Network Policies to control and restrict communication between pods. This improves security by allowing only required traffic within the cluster.
-
----
-
-### 📊 Monitoring (Prometheus + Grafana)
-- Prometheus is used to collect system metrics  
-- Grafana is used to visualize real-time data  
-- Dashboards include CPU, memory, and pod monitoring  
-
----
-
-### 🧪 Testing Strategy
-- Functional Testing → `/health` endpoint  
-- Failure Testing → `/crash` endpoint  
-- Recovery Testing → Kubernetes auto-healing  
-
----
-
-### 🔄 Self-Healing Demonstration
-The system automatically recovers from failures:
-- When `/crash` endpoint is triggered  
-- Kubernetes detects failure  
-- Pod is restarted automatically  
-
----
-
-### 🔮 Upcoming Improvements
-- Integration of LitmusChaos for advanced chaos engineering  
-- Deployment on AWS (EKS)  
-- Improved frontend UI  
-
-## 👨‍💻 Author
-
-ZorawarSinghKhan
-GitHub: https://github.com/ZorawarSinghKhan
+SRM University Delhi-NCR, Sonipat
