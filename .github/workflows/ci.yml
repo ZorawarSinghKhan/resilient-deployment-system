@@ -6,12 +6,19 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  security-and-build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Run Trivy Filesystem Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
 
       - name: Build Docker Image
         run: docker build -t resilient-app .
