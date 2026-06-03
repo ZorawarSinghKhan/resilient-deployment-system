@@ -1,0 +1,21 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: packet-loss-test
+  namespace: chaos-testing
+
+spec:
+  action: loss
+  mode: one
+
+  selector:
+    namespaces:
+      - default
+
+    labelSelectors:
+      app: chaos-app
+
+  loss:
+    loss: "30"
+
+  duration: "3m"
