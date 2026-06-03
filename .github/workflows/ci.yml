@@ -42,3 +42,9 @@ jobs:
               -p 80:5000 \
               --name resilient-container \
               resilient-app
+
+      - name: Upload Resilience Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: resilience-report
+          path: reports/resilience-report.txt
